@@ -447,7 +447,7 @@ body::before {
 .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
 
 /* ── DASHBOARD ── */
-#dash { padding: 36px 44px; overflow-y: auto; position: relative; z-index: 1; }
+#dash { padding: 36px 44px; overflow-y: auto; }
 .dash-eyebrow { font-size: 11px; font-weight: 600; color: var(--t3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; transition: color 0.4s; }
 .dash-title   { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 5px; transition: color 0.4s; }
 .dash-title em { font-style: italic; color: var(--mood); font-weight: 400; transition: color 0.5s; }
@@ -502,7 +502,7 @@ body::before {
 /* ── INTENT ── */
 #intent {
   align-items: center; justify-content: center;
-  background: var(--bg); transition: background 0.4s; position: relative; z-index: 1;
+  background: var(--bg); transition: background 0.4s;
 }
 .intent-card {
   width: 100%; max-width: 460px; padding: 0 28px;
