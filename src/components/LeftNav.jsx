@@ -3,15 +3,21 @@ import LooptimerWidget from './LooptimerWidget'
 import MoodSwatches from './MoodSwatches'
 
 export default function LeftNav() {
-  const { mood, goTo, sessionActive, milestones, toggleMilestone, intention } = useApp()
+  const { mood, theme, goTo, sessionActive, milestones, toggleMilestone, intention } = useApp()
+
+  // Gradient: strong at bottom (milestones/idle), fades before reaching timer at top
+  // Submersive = deeper immersion; dark/light = standard accent
+  const isSubmersive = theme === 'submersive'
+  const colorStyle = {
+    background: isSubmersive
+      ? `linear-gradient(to top, rgba(${mood.rgb},0.80) 0%, rgba(${mood.rgb},0.55) 35%, rgba(${mood.rgb},0.18) 68%, rgba(${mood.rgb},0.04) 100%)`
+      : `linear-gradient(to top, rgba(${mood.rgb},0.50) 0%, rgba(${mood.rgb},0.30) 42%, rgba(${mood.rgb},0.07) 72%, transparent 100%)`,
+  }
 
   return (
     <aside className="leftnav">
-      {/* Mood color wash layer */}
-      <div
-        className="leftnav-color"
-        style={{ background: `rgba(${mood.rgb}, 0.38)` }}
-      />
+      {/* Mood color wash layer — gradient fades toward timer */}
+      <div className="leftnav-color" style={colorStyle} />
 
       <LooptimerWidget />
       <MoodSwatches />

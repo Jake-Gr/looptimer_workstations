@@ -10,10 +10,14 @@ const RIGS = [
   { icon: '📹', name: 'Meeting',    tools: 'Zoom · Notes' },
 ]
 
-const TOOL_ORDER = { notion: 0, claude: 1, figma: 2 }
+const THEME_OPTS = [
+  { key: 'submersive', label: 'Sub' },
+  { key: 'light',      label: 'Light' },
+  { key: 'dark',       label: 'Dark' },
+]
 
 export default function TopNav() {
-  const { screen, goTo, toggleTheme, mood, activeTool, setActiveTool, selectedRig, setSelectedRig } = useApp()
+  const { screen, goTo, theme, setTheme, mood, activeTool, setActiveTool, selectedRig, setSelectedRig } = useApp()
   const pillRef = useRef(null)
   const indRef  = useRef(null)
 
@@ -34,10 +38,6 @@ export default function TopNav() {
   useEffect(() => {
     if (sessionVisible) setTimeout(posInd, 80)
   }, [sessionVisible, activeTool])
-
-  function switchTool(t) {
-    setActiveTool(t)
-  }
 
   return (
     <nav className="topnav">
@@ -70,7 +70,7 @@ export default function TopNav() {
             <button
               key={t.key}
               className={`ts-btn${activeTool === t.key ? ' active' : ''}`}
-              onClick={() => switchTool(t.key)}
+              onClick={() => setActiveTool(t.key)}
             >
               <span className={`ts-badge ${t.badgeCls}`}>{t.badge}</span>
               {t.label}
@@ -79,7 +79,7 @@ export default function TopNav() {
           <div className="ts-sep" />
           <button
             className={`ts-btn${activeTool === 'figma' ? ' active' : ''}`}
-            onClick={() => switchTool('figma')}
+            onClick={() => setActiveTool('figma')}
           >
             <span className="ts-badge figma">F</span>
             Figma
@@ -89,10 +89,19 @@ export default function TopNav() {
 
       {/* Right controls */}
       <div className="topnav-right">
-        <div className="theme-toggle" onClick={toggleTheme}>
-          <span className="ti moon">🌙</span>
-          <span className="ti sun">☀</span>
+        {/* 3-way theme segmented control */}
+        <div className="theme-seg">
+          {THEME_OPTS.map(({ key, label }) => (
+            <button
+              key={key}
+              className={`theme-seg-btn${theme === key ? ' active' : ''}`}
+              onClick={() => setTheme(key)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
+
         <div className="rig-wrap">
           <div className="rig-btn">
             <span className="rig-icon">{selectedRig.icon}</span>
