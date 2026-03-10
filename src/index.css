@@ -151,23 +151,24 @@ body::before {
 /* Right controls */
 .topnav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 
-.theme-toggle {
-  width: 34px; height: 20px; border-radius: 10px;
+/* 3-way theme segmented control */
+.theme-seg {
+  display: flex; align-items: center;
   background: var(--raised); border: 1px solid var(--border2);
-  position: relative; cursor: pointer; flex-shrink: 0;
-  transition: background 0.3s, border-color 0.3s;
+  border-radius: 10px; padding: 2px; gap: 1px;
+  transition: background 0.4s, border-color 0.4s;
 }
-.theme-toggle::after {
-  content: ''; position: absolute; top: 2px; left: 2px;
-  width: 14px; height: 14px; border-radius: 7px; background: var(--t3);
-  transition: left 0.25s var(--ease), background 0.3s;
+.theme-seg-btn {
+  height: 22px; padding: 0 9px; border-radius: 7px; border: none;
+  background: transparent; font-family: var(--font); font-size: 10px; font-weight: 700;
+  color: var(--t3); cursor: pointer; letter-spacing: 0.02em; white-space: nowrap;
+  transition: color 0.18s, background 0.18s, border-color 0.18s;
 }
-[data-theme="light"] .theme-toggle::after { left: 16px; background: var(--mood); }
-.ti { position: absolute; font-size: 8px; top: 50%; transform: translateY(-50%); pointer-events: none; transition: opacity 0.2s; }
-.ti.moon { right: 4px; opacity: 1; }
-.ti.sun  { left: 4px;  opacity: 0; }
-[data-theme="light"] .ti.moon { opacity: 0; }
-[data-theme="light"] .ti.sun  { opacity: 1; }
+.theme-seg-btn:hover { color: var(--t2); }
+.theme-seg-btn.active {
+  background: var(--mood-soft); border: 1px solid rgba(var(--mood-rgb),0.25);
+  color: var(--mood);
+}
 
 .rig-wrap { position: relative; }
 .rig-btn {
@@ -213,10 +214,10 @@ body::before {
   box-shadow: 3px 0 24px rgba(var(--mood-rgb), 0.12);
 }
 
+/* Left nav color layer — gradient set by JS, this is the CSS transition base */
 .leftnav-color {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  transition: background 0.5s;
-  background: rgba(var(--mood-rgb), 0.38);
+  transition: background 0.55s ease;
 }
 
 /* grain texture */
@@ -434,9 +435,11 @@ body::before {
   background: var(--bg); transition: background 0.4s;
 }
 .main::before {
-  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 180px;
-  background: linear-gradient(90deg, rgba(var(--mood-rgb),0.055) 0%, transparent 100%);
-  pointer-events: none; z-index: 0; transition: background 0.5s;
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(var(--mood-rgb),0.08) 0%, transparent 38%),
+    radial-gradient(ellipse at 0% 88%, rgba(var(--mood-rgb),0.08) 0%, transparent 52%);
+  pointer-events: none; z-index: 0; transition: background 0.55s;
 }
 
 /* ─── SCREENS ─── */
@@ -447,7 +450,7 @@ body::before {
 .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
 
 /* ── DASHBOARD ── */
-#dash { padding: 36px 44px; overflow-y: auto; position: relative; z-index: 1; }
+#dash { padding: 36px 44px; overflow-y: auto; }
 .dash-eyebrow { font-size: 11px; font-weight: 600; color: var(--t3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; transition: color 0.4s; }
 .dash-title   { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 5px; transition: color 0.4s; }
 .dash-title em { font-style: italic; color: var(--mood); font-weight: 400; transition: color 0.5s; }
@@ -474,13 +477,14 @@ body::before {
 .rig-card {
   background: var(--panel); border: 1px solid var(--border);
   border-radius: 13px; padding: 14px; cursor: pointer;
-  transition: all 0.18s var(--ease); position: relative; overflow: hidden;
+  transition: all 0.18s var(--ease), box-shadow 0.5s; position: relative; overflow: hidden;
+  box-shadow: 0 1px 10px rgba(var(--mood-rgb), 0.07);
 }
 .rig-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2.5px;
   border-radius: 13px 13px 0 0; opacity: 0; transition: opacity 0.2s;
 }
-.rig-card:hover       { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow); }
+.rig-card:hover       { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow), 0 0 18px rgba(var(--mood-rgb),0.10); }
 .rig-card:hover::before, .rig-card.active::before { opacity: 1; }
 .rig-card.active      { border-color: var(--mood); }
 .rig-card[data-c="orange"]::before { background: #E55A1E; }
@@ -502,7 +506,7 @@ body::before {
 /* ── INTENT ── */
 #intent {
   align-items: center; justify-content: center;
-  background: var(--bg); transition: background 0.4s; position: relative; z-index: 1;
+  background: var(--bg); transition: background 0.4s;
 }
 .intent-card {
   width: 100%; max-width: 460px; padding: 0 28px;
@@ -638,6 +642,189 @@ body::before {
   cursor: pointer; transition: filter 0.15s, background 0.5s; letter-spacing: -0.01em;
 }
 .close-btn:hover { filter: brightness(1.1); }
+
+/* ─── FLOAT BUTTON (LeftNav, below LooptimerWidget) ─── */
+.float-btn {
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  width: calc(100% - 28px); margin: 0 14px;
+  height: 28px; border-radius: 8px;
+  background: transparent; border: 1px solid var(--border2);
+  cursor: pointer; color: var(--t3); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.15s, border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  position: relative; z-index: 1;
+}
+.float-btn:hover {
+  color: var(--t1);
+  border-color: rgba(var(--mood-rgb), 0.55);
+  background: rgba(var(--mood-rgb), 0.08);
+  box-shadow: 0 0 0 1px rgba(var(--mood-rgb), 0.20);
+}
+
+/* ═══ MINI TIMER ═══ */
+
+.mini-app {
+  width: 100vw; height: 100vh;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  overflow: hidden; position: relative;
+  transition: background 0.4s;
+  user-select: none;
+}
+[data-theme="submersive"] .mini-app {
+  background: linear-gradient(to bottom, #050403 15%, var(--mood-dark) 100%);
+}
+
+/* Inset colored border for submersive mini */
+.mini-sub-border {
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(var(--mood-rgb), 0.85),
+    inset 0 0 30px rgba(var(--mood-rgb), 0.25);
+}
+
+.mini-header {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 10px 6px; flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.4s;
+}
+.mini-brand { display: flex; align-items: center; gap: 5px; flex-shrink: 0; margin-right: 2px; }
+.mini-logo-sq {
+  width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.20);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 8px rgba(var(--mood-rgb),0.30); transition: box-shadow 0.5s;
+}
+.mini-logo-sq svg { width: 10px; height: 10px; }
+.mini-brand-name {
+  font-size: 10px; font-weight: 700; letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.72); white-space: nowrap;
+}
+[data-theme="light"] .mini-brand-name { color: var(--t2); }
+
+.mini-theme-btn {
+  font-size: 11px; background: none; border: none; cursor: pointer;
+  padding: 2px 5px; border-radius: 5px; color: var(--t3); line-height: 1;
+  transition: color 0.15s, background 0.15s; flex-shrink: 0;
+}
+.mini-theme-btn:hover { color: var(--t1); background: var(--raised); }
+
+.mini-swatches { display: flex; gap: 4px; align-items: center; margin-left: auto; }
+.mini-swatch {
+  width: 14px; height: 14px; border-radius: 4px; cursor: pointer; flex-shrink: 0;
+  border: 2px solid transparent;
+  transition: transform 0.18s var(--spring), border-color 0.15s, box-shadow 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+.mini-swatch:hover  { transform: scale(1.22); }
+.mini-swatch.active { border-color: rgba(255,255,255,0.85); transform: scale(1.1); box-shadow: 0 0 8px rgba(255,255,255,0.22); }
+
+.mini-body {
+  flex: 1; display: flex; align-items: center; justify-content: center; padding: 8px;
+}
+/* Responsive: square widget fills the smaller of width or remaining height */
+.mini-widget-wrap {
+  width: min(calc(100vw - 16px), calc(100vh - 56px));
+  flex-shrink: 0;
+}
+.mini-widget-wrap .lt-widget { margin-bottom: 0; }
+
+/* Scale timer face with viewport size */
+.mini-widget-wrap .lt-time       { font-size: clamp(28px, 8vmin, 100px); }
+.mini-widget-wrap .lt-sub        { font-size: clamp(9px,  2.2vmin, 18px); }
+.mini-widget-wrap .lt-btn        { height: clamp(26px, 5vmin, 52px); font-size: clamp(10px, 2.5vmin, 22px); padding: 0 clamp(8px, 2vmin, 20px); }
+.mini-widget-wrap .lt-btns       { gap: clamp(4px, 1vmin, 10px); margin-top: clamp(6px, 1.5vmin, 16px); }
+.mini-widget-wrap .lt-loop-badge { font-size: clamp(8px, 1.8vmin, 14px); top: clamp(8px, 2vmin, 18px); }
+.mini-widget-wrap .lt-widget     { border-radius: clamp(14px, 3.5vmin, 34px); }
+
+/* ═══ END MINI TIMER ═══ */
+
+/* ═══ SUBMERSIVE THEME OVERRIDES ═══ */
+
+/*
+  LEFT NAV — the sidebar IS the color.
+  Base: real gradient from near-black at top (timer glows against dark)
+        to var(--mood-dark) at bottom (combined with the overlay = full color).
+  The .leftnav-color overlay (set by LeftNav.jsx) adds near-opaque color at bottom,
+  fading to transparent at top — together they produce a vivid color bottom,
+  dark enough at the timer top for the ring to read as illuminated.
+*/
+[data-theme="submersive"] .leftnav {
+  background: linear-gradient(to bottom, #050403 0%, #050403 25%, var(--mood-dark) 100%);
+  box-shadow: 3px 0 48px rgba(var(--mood-rgb), 0.45);
+}
+
+/*
+  FULL-SCREEN COLORED BORDER — feels like the desktop background is that color.
+  Fixed overlay on top of everything (z-index below the top stripe):
+  - Thin solid-ish colored edge right at the viewport boundary
+  - Wide soft inner glow that bleeds inward from all four sides
+*/
+[data-theme="submersive"] body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  box-shadow:
+    inset 0 0 0 3px rgba(var(--mood-rgb), 0.80),
+    inset 0 0 40px rgba(var(--mood-rgb), 0.28),
+    inset 0 0 140px rgba(var(--mood-rgb), 0.12);
+  transition: box-shadow 0.55s;
+}
+
+/* Top stripe: brighter + glow in submersive */
+[data-theme="submersive"] body::before {
+  height: 3px;
+  background: linear-gradient(90deg, var(--mood-light), var(--mood), rgba(var(--mood-rgb),0.3));
+  box-shadow: 0 0 28px rgba(var(--mood-rgb), 0.70);
+}
+
+/* Main workspace: rich ambient from left edge + all corners */
+[data-theme="submersive"] .main::before {
+  background:
+    linear-gradient(90deg, rgba(var(--mood-rgb),0.28) 0%, transparent 52%),
+    radial-gradient(ellipse at 0% 96%,   rgba(var(--mood-rgb),0.32) 0%, transparent 58%),
+    radial-gradient(ellipse at 62% 0%,   rgba(var(--mood-rgb),0.14) 0%, transparent 60%),
+    radial-gradient(ellipse at 100% 60%, rgba(var(--mood-rgb),0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(var(--mood-rgb),0.18) 0%, transparent 52%);
+}
+
+/* Tile backlight */
+[data-theme="submersive"] .rig-card {
+  box-shadow: 0 0 26px rgba(var(--mood-rgb),0.18), 0 2px 10px rgba(0,0,0,0.5);
+  border-color: rgba(var(--mood-rgb), 0.22);
+}
+[data-theme="submersive"] .rig-card:hover {
+  box-shadow: 0 0 38px rgba(var(--mood-rgb),0.34), 0 8px 24px rgba(0,0,0,0.6);
+  border-color: rgba(var(--mood-rgb), 0.44);
+}
+
+/* Stat cards backlight */
+[data-theme="submersive"] .stat-card {
+  box-shadow: 0 0 22px rgba(var(--mood-rgb),0.16);
+  border-color: rgba(var(--mood-rgb), 0.20);
+}
+
+/* Topnav accent */
+[data-theme="submersive"] .topnav {
+  box-shadow: 0 1px 0 rgba(var(--mood-rgb),0.40);
+}
+
+/* Theme seg active button */
+[data-theme="submersive"] .theme-seg-btn.active {
+  background: rgba(var(--mood-rgb),0.28);
+  color: var(--mood-light);
+}
+
+/* Looptimer widget — deeper dark face so the ring pops as illuminated */
+[data-theme="submersive"] .lt-widget {
+  background: rgba(0,0,0,0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 4px 28px rgba(0,0,0,0.70),
+    0 0 40px rgba(var(--mood-rgb),0.20);
+}
+
+/* ═══ END SUBMERSIVE ═══ */
 
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
