@@ -643,6 +643,87 @@ body::before {
 }
 .close-btn:hover { filter: brightness(1.1); }
 
+/* ─── POP-OUT BUTTON (TopNav) ─── */
+.popout-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--raised); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--t3); flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, box-shadow 0.15s, background 0.4s;
+}
+.popout-btn:hover {
+  color: var(--t1);
+  border-color: var(--mood);
+  box-shadow: 0 0 0 1px var(--mood);
+}
+
+/* ═══ MINI TIMER ═══ */
+
+.mini-app {
+  width: 100vw; height: 100vh;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  overflow: hidden; position: relative;
+  transition: background 0.4s;
+  user-select: none;
+}
+[data-theme="submersive"] .mini-app {
+  background: linear-gradient(to bottom, #050403 15%, var(--mood-dark) 100%);
+}
+
+/* Inset colored border for submersive mini */
+.mini-sub-border {
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(var(--mood-rgb), 0.85),
+    inset 0 0 30px rgba(var(--mood-rgb), 0.25);
+}
+
+.mini-header {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 10px 6px; flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.4s;
+}
+.mini-brand { display: flex; align-items: center; gap: 5px; flex-shrink: 0; margin-right: 2px; }
+.mini-logo-sq {
+  width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.20);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 8px rgba(var(--mood-rgb),0.30); transition: box-shadow 0.5s;
+}
+.mini-logo-sq svg { width: 10px; height: 10px; }
+.mini-brand-name {
+  font-size: 10px; font-weight: 700; letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.72); white-space: nowrap;
+}
+[data-theme="light"] .mini-brand-name { color: var(--t2); }
+
+.mini-theme-btn {
+  font-size: 11px; background: none; border: none; cursor: pointer;
+  padding: 2px 5px; border-radius: 5px; color: var(--t3); line-height: 1;
+  transition: color 0.15s, background 0.15s; flex-shrink: 0;
+}
+.mini-theme-btn:hover { color: var(--t1); background: var(--raised); }
+
+.mini-swatches { display: flex; gap: 4px; align-items: center; margin-left: auto; }
+.mini-swatch {
+  width: 14px; height: 14px; border-radius: 4px; cursor: pointer; flex-shrink: 0;
+  border: 2px solid transparent;
+  transition: transform 0.18s var(--spring), border-color 0.15s, box-shadow 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+.mini-swatch:hover  { transform: scale(1.22); }
+.mini-swatch.active { border-color: rgba(255,255,255,0.85); transform: scale(1.1); box-shadow: 0 0 8px rgba(255,255,255,0.22); }
+
+.mini-body {
+  flex: 1; display: flex; align-items: center; justify-content: center; padding: 8px;
+}
+.mini-widget-wrap { width: 162px; flex-shrink: 0; }
+.mini-widget-wrap .lt-widget { margin-bottom: 0; }
+
+/* ═══ END MINI TIMER ═══ */
+
 /* ═══ SUBMERSIVE THEME OVERRIDES ═══ */
 
 /*
