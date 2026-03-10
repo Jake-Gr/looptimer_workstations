@@ -6,11 +6,13 @@ export default function LeftNav() {
   const { mood, theme, goTo, sessionActive, milestones, toggleMilestone, intention } = useApp()
 
   // Gradient: strong at bottom (milestones/idle), fades before reaching timer at top
-  // Submersive = deeper immersion; dark/light = standard accent
+  // Submersive: near-opaque at bottom so the full mood color is visible;
+  //             fades to transparent at top so the timer glows against the dark base
+  // Dark/Light: subtle tint only
   const isSubmersive = theme === 'submersive'
   const colorStyle = {
     background: isSubmersive
-      ? `linear-gradient(to top, rgba(${mood.rgb},0.80) 0%, rgba(${mood.rgb},0.55) 35%, rgba(${mood.rgb},0.18) 68%, rgba(${mood.rgb},0.04) 100%)`
+      ? `linear-gradient(to top, rgba(${mood.rgb},1.0) 0%, rgba(${mood.rgb},0.80) 22%, rgba(${mood.rgb},0.30) 55%, rgba(${mood.rgb},0.04) 80%, transparent 100%)`
       : `linear-gradient(to top, rgba(${mood.rgb},0.50) 0%, rgba(${mood.rgb},0.30) 42%, rgba(${mood.rgb},0.07) 72%, transparent 100%)`,
   }
 
