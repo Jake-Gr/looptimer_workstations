@@ -643,18 +643,22 @@ body::before {
 }
 .close-btn:hover { filter: brightness(1.1); }
 
-/* ─── POP-OUT BUTTON (TopNav) ─── */
-.popout-btn {
-  width: 28px; height: 28px; border-radius: 8px;
-  background: var(--raised); border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--t3); flex-shrink: 0;
-  transition: color 0.15s, border-color 0.15s, box-shadow 0.15s, background 0.4s;
+/* ─── FLOAT BUTTON (LeftNav, below LooptimerWidget) ─── */
+.float-btn {
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  width: calc(100% - 28px); margin: 0 14px;
+  height: 28px; border-radius: 8px;
+  background: transparent; border: 1px solid var(--border2);
+  cursor: pointer; color: var(--t3); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.15s, border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  position: relative; z-index: 1;
 }
-.popout-btn:hover {
+.float-btn:hover {
   color: var(--t1);
-  border-color: var(--mood);
-  box-shadow: 0 0 0 1px var(--mood);
+  border-color: rgba(var(--mood-rgb), 0.55);
+  background: rgba(var(--mood-rgb), 0.08);
+  box-shadow: 0 0 0 1px rgba(var(--mood-rgb), 0.20);
 }
 
 /* ═══ MINI TIMER ═══ */
@@ -719,8 +723,20 @@ body::before {
 .mini-body {
   flex: 1; display: flex; align-items: center; justify-content: center; padding: 8px;
 }
-.mini-widget-wrap { width: 162px; flex-shrink: 0; }
+/* Responsive: square widget fills the smaller of width or remaining height */
+.mini-widget-wrap {
+  width: min(calc(100vw - 16px), calc(100vh - 56px));
+  flex-shrink: 0;
+}
 .mini-widget-wrap .lt-widget { margin-bottom: 0; }
+
+/* Scale timer face with viewport size */
+.mini-widget-wrap .lt-time       { font-size: clamp(28px, 8vmin, 100px); }
+.mini-widget-wrap .lt-sub        { font-size: clamp(9px,  2.2vmin, 18px); }
+.mini-widget-wrap .lt-btn        { height: clamp(26px, 5vmin, 52px); font-size: clamp(10px, 2.5vmin, 22px); padding: 0 clamp(8px, 2vmin, 20px); }
+.mini-widget-wrap .lt-btns       { gap: clamp(4px, 1vmin, 10px); margin-top: clamp(6px, 1.5vmin, 16px); }
+.mini-widget-wrap .lt-loop-badge { font-size: clamp(8px, 1.8vmin, 14px); top: clamp(8px, 2vmin, 18px); }
+.mini-widget-wrap .lt-widget     { border-radius: clamp(14px, 3.5vmin, 34px); }
 
 /* ═══ END MINI TIMER ═══ */
 

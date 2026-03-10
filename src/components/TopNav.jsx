@@ -16,16 +16,6 @@ const THEME_OPTS = [
   { key: 'dark',       label: 'Dark' },
 ]
 
-function openMiniTimer() {
-  const w = 300, h = 220
-  const left = Math.max(0, window.screen.width  - w - 20)
-  const top  = Math.max(0, window.screen.height - h - 60)
-  window.open(
-    '/?mini=true',
-    'looptimer-mini',
-    `width=${w},height=${h},left=${left},top=${top},location=no,menubar=no,toolbar=no,status=no,resizable=yes,scrollbars=no`
-  )
-}
 
 export default function TopNav() {
   const { screen, goTo, theme, setTheme, mood, activeTool, setActiveTool, selectedRig, setSelectedRig } = useApp()
@@ -100,15 +90,7 @@ export default function TopNav() {
 
       {/* Right controls */}
       <div className="topnav-right">
-        {/* Float timer in its own window */}
-        <button className="popout-btn" onClick={openMiniTimer} title="Float looptimer">
-          <svg viewBox="0 0 14 14" fill="none" width="13" height="13">
-            <rect x="1" y="4.5" width="8.5" height="7.5" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
-            <path d="M7 1h6v6M13 1L8 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-
-        {/* 3-way theme segmented control */}
+{/* 3-way theme segmented control */}
         <div className="theme-seg">
           {THEME_OPTS.map(({ key, label }) => (
             <button

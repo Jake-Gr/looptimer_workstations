@@ -2,6 +2,17 @@ import { useApp } from '../context/AppContext'
 import LooptimerWidget from './LooptimerWidget'
 import MoodSwatches from './MoodSwatches'
 
+function openMiniTimer() {
+  const w = 300, h = 220
+  const left = Math.max(0, window.screen.width  - w - 20)
+  const top  = Math.max(0, window.screen.height - h - 60)
+  window.open(
+    '/?mini=true',
+    'looptimer-mini',
+    `width=${w},height=${h},left=${left},top=${top},location=no,menubar=no,toolbar=no,status=no,resizable=yes,scrollbars=no`
+  )
+}
+
 export default function LeftNav() {
   const { mood, theme, goTo, sessionActive, milestones, toggleMilestone, intention } = useApp()
 
@@ -22,6 +33,16 @@ export default function LeftNav() {
       <div className="leftnav-color" style={colorStyle} />
 
       <LooptimerWidget />
+
+      {/* Float timer into its own corner window */}
+      <button className="float-btn" onClick={openMiniTimer} title="Float looptimer">
+        <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
+          <rect x="1" y="4.5" width="8.5" height="7.5" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
+          <path d="M7 1h6v6M13 1L8 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        Float timer
+      </button>
+
       <MoodSwatches />
 
       {/* Idle state */}
